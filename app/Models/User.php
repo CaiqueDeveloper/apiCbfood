@@ -81,19 +81,14 @@ class User extends Authenticatable implements JWTSubject
 
     protected static function getUser($id = null){
         
-        $data = [];
-
         if(!Auth::check()){
-            $data['errors'] = ['message'=> 'User is not logged'];
-            return data()->json($data);
+            return response()->json(['message'=> 'User is not logged'],422);
         }
-
-        if(!$id){
+        if($id){
             $user = User::find($id);
         }
         $user = Auth::user();
-        $data[] = $user->with('company', 'companies','address', 'image')->get();
 
-        return $data;
+        return $user->with('company', 'companies','address', 'image')->get();
     }
 }

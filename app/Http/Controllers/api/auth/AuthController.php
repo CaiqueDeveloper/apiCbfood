@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+       // $this->middleware('auth:api', ['except' => ['login']]);
     }
 
     /**
@@ -44,8 +44,11 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        $this->guard()->logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        if(!Auth::check()){
+            return response()->json(['message' => 'Unable to logout, there is no authenticated user.']);
+        }
+        Auth::logout();
+        return response()->json(['message' => 'Successfully Logout']);
     }
 
     /**
@@ -72,9 +75,6 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => $this->guard()->factory()->getTTL() * 60
         ]);
-    }
-    public function me(){
-        return response()->json(User::getUser());
     }
     /**
      * Get the guard to be used during authentication.
