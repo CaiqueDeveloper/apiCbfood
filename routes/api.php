@@ -32,4 +32,3 @@ Route::prefix('panel')->group(base_path('routes/api/deliverymen.php'));
 Route::prefix('panel')->group(base_path('routes/api/systemUsability.php'));
 Route::prefix('panel')->group(base_path('routes/api/ultils.php'));
 Route::prefix('panel')->group(base_path('routes/api/report.php'));
-Route::prefix('panel')->group(base_path('routes/api/promotion.php'));
