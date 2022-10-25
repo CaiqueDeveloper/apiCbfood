@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements JWTSubject
@@ -23,6 +24,9 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'number_phone',
+        'company_id',
+        'password',
         'password',
     ];
 
@@ -90,5 +94,45 @@ class User extends Authenticatable implements JWTSubject
         $user = Auth::user();
 
         return $user->with('company', 'companies','address', 'image')->get();
+    }
+   /**
+    * Undocumented function
+    *
+    * @param [type] $data
+    * @param [type] $is_request_your_demo
+    * @return void
+    */
+    protected static function storage($data, $is_request_your_demo = null){
+
+        $company_id = 0;
+        $user_id = 0;
+
+        if($is_request_your_demo === true){
+            
+            $company = Company::latest()->first();
+            $company_id = $company->id;
+        }else{
+            $company_id = Auth::user()->company_id;
+        }
+
+        $user = $data;
+        $user['company_id'] = $company_id;
+        $user['password'] = Hash::make($data['password']);
+        $user_id = User::create($user)->id;
+
+        if($user_id){
+
+            if(!CompanyUser::AssociateUserWithTheCompany(['company_id' => $company_id, 'user_id'=> $user_id])){
+                return response()->json('Failed, Associate User With The Company', 422);
+            }
+            if($is_request_your_demo === true){          
+                if(!ProfilesUser::AssociateUserWithProfile(['user_id'=> $user_id] , true)){
+                    return response()->json('Failed, Associate User With Profile', 422);
+                }
+            }
+            return response()->json('Success, Registered User', 200);
+        }else{
+            return response()->json('Failed, Registered User', 422);
+        }
     }
 }

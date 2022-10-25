@@ -11,4 +11,9 @@ class CompanyUser extends Model
     protected  $table = 'company_user';
     public $timestamps = false;
     protected $fillable = ['user_id', 'company_id'];
+
+    protected static function AssociateUserWithTheCompany($data){
+        
+        return CompanyUser::updateOrCreate($data,$data);
+    }
 }
