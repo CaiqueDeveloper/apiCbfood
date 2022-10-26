@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StorageCompanyRequest;
-use App\Http\Requests\StorageUserRequest;
+use App\Http\Requests\company\StorageCompanyRequest;
+use App\Http\Requests\user\StorageUserRequest;
 use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\Request;
