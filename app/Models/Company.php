@@ -55,9 +55,9 @@ class Company extends Model
         $data['cnpj'] = str_replace('-','',filter_var($data['cnpj'], FILTER_SANITIZE_NUMBER_INT));
 
         if(Company::create($data)){
-            return response()->json('Success, Registered Company', 200);
+            return response()->json(['message' => 'Success, Registered Company', 'status' => 200], 200);
         }else{
-            return response()->json('Failed, Registered Company', 422);
+            return response()->json(['message' => 'Failed, Registered Company', 'status' => 422], 422);
         }
     }
 

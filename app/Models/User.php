@@ -130,9 +130,9 @@ class User extends Authenticatable implements JWTSubject
                     return response()->json('Failed, Associate User With Profile', 422);
                 }
             }
-            return response()->json('Success, Registered User', 200);
+            return response()->json(['message' => 'Success, Registered User', 'status' => 200], 200);
         }else{
-            return response()->json('Failed, Registered User', 422);
+            return response()->json(['message' =>'Failed, Registered User', 'status' => 422], 422);
         }
     }
 }
