@@ -103,33 +103,32 @@ class User extends Authenticatable implements JWTSubject
     * @return void
     */
     protected static function storage($data, $is_request_your_demo = null){
-
+        
         $company_id = 0;
         $user_id = 0;
+        $profile_id = isset($data['profile_id']) ? $data['profile_id'] : 0 ;
 
         if($is_request_your_demo === true){
-            
             $company = Company::latest()->first();
             $company_id = $company->id;
         }else{
             $company_id = Auth::user()->company_id;
         }
-
-        $user = $data;
-        $user['company_id'] = $company_id;
-        $user['password'] = Hash::make($data['password']);
-        $user_id = User::create($user)->id;
+       
+        isset($data['profile_id']) ? array_pop($data) : $data;
+        
+        $data['company_id'] = $company_id;
+        $data['password'] = Hash::make($data['password']);
+        $user_id = User::create($data)->id;
 
         if($user_id){
-
             if(!CompanyUser::AssociateUserWithTheCompany(['company_id' => $company_id, 'user_id'=> $user_id])){
                 return response()->json('Failed, Associate User With The Company', 422);
             }
-            if($is_request_your_demo === true){          
-                if(!ProfilesUser::AssociateUserWithProfile(['user_id'=> $user_id] , true)){
-                    return response()->json('Failed, Associate User With Profile', 422);
-                }
+            if(!ProfilesUser::AssociateUserWithProfile(['user_id'=> $user_id, 'profile_id' => $profile_id] , $is_request_your_demo)){
+                return response()->json('Failed, Associate User With Profile', 422);
             }
+
             return response()->json(['message' => 'Success, Registered User', 'status' => 200], 200);
         }else{
             return response()->json(['message' =>'Failed, Registered User', 'status' => 422], 422);

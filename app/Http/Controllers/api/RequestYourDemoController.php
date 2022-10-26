@@ -19,7 +19,7 @@ class RequestYourDemoController extends Controller
      */
     protected function storageUser(StorageUserRequest $request){
         
-        return User::storage($request->except('password_confirmed'));
+        return User::storage($request->except('password_confirmed'), true);
     }
 
     protected function storageCompany(StorageCompanyRequest $request){
