@@ -140,7 +140,11 @@ class User extends Authenticatable implements JWTSubject
 
         return $user->with('company', 'companies','address', 'image')->get();
     }
-
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     protected static function getAllUsers(){
 
         $users = Company::find(Auth::user()->company_id)->users()->get();
@@ -149,7 +153,13 @@ class User extends Authenticatable implements JWTSubject
         }
         return $users;
     }
-
+    /**
+     * Undocumented function
+     *
+     * @param [type] $data
+     * @param [type] $id
+     * @return void
+     */
     protected static function updateUser($data, $id){
       
         $user = Company::find(Auth::user()->company_id)->users()->where('users.id',$id['id'])->get();
@@ -157,13 +167,35 @@ class User extends Authenticatable implements JWTSubject
         if(sizeof($user) < 1){
             return response()->json(['message' => 'User Not Found', 'status' => 500], 500);
         }
-        
+
         if($user[0]->update($data)){
 
             return response()->json(['message' => 'Success, Update User', 'status' => 200], 200);
         }else{
 
             return response()->json(['message' =>'Failed, Update User', 'status' => 422], 422);
+        }
+    }
+    /**
+     * Undocumented function
+     *
+     * @param [type] $id
+     * @return void
+     */
+    protected static function deleteUser($id){
+
+        $user = Company::find(Auth::user()->company_id)->users()->where('users.id',$id)->get();
+        
+        if(sizeof($user) < 1){
+            return response()->json(['message' => 'User Not Found', 'status' => 500], 500);
+        }
+
+        if($user[0]->delete()){
+
+            return response()->json(['message' => 'Success, Delete User', 'status' => 200], 200);
+        }else{
+
+            return response()->json(['message' =>'Failed, Delete User', 'status' => 422], 422);
         }
     }
 }
