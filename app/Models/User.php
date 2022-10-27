@@ -76,25 +76,7 @@ class User extends Authenticatable implements JWTSubject
     public function image(){
         return $this->morphMany(Images::class, 'imagebleMorph');
     }
-    /**
-     * Get User
-     *
-     * @param [type] $id
-     * @return void
-     */
-
-    protected static function getUser($id = null){
-        
-        if(!Auth::check()){
-            return response()->json(['message'=> 'User is not logged'],422);
-        }
-        if($id){
-            $user = User::find($id);
-        }
-        $user = Auth::user();
-
-        return $user->with('company', 'companies','address', 'image')->get();
-    }
+    
    /**
     * Undocumented function
     *
@@ -107,14 +89,14 @@ class User extends Authenticatable implements JWTSubject
         $company_id = 0;
         $user_id = 0;
         $profile_id = isset($data['profile_id']) ? $data['profile_id'] : 0 ;
-
+        
         if($is_request_your_demo === true){
             $company = Company::latest()->first();
             $company_id = $company->id;
         }else{
+            
             $company_id = Auth::user()->company_id;
         }
-       
         isset($data['profile_id']) ? array_pop($data) : $data;
         
         $data['company_id'] = $company_id;
@@ -132,6 +114,56 @@ class User extends Authenticatable implements JWTSubject
             return response()->json(['message' => 'Success, Registered User', 'status' => 200], 200);
         }else{
             return response()->json(['message' =>'Failed, Registered User', 'status' => 422], 422);
+        }
+    }
+    /**
+     * Get User
+     *
+     * @param [type] $id
+     * @return void
+     */
+
+    protected static function getUser($id = null){
+        
+        if(!Auth::check()){
+            return response()->json(['message'=> 'User is not logged'],422);
+        }
+        if($id){
+            $user = User::find($id)->first();
+            if(sizeof($user) < 1){
+                return response()->json(['message' => 'User Not Found', 'status' => 500], 500);
+            }
+        }else{
+
+            $user = Auth::user();
+        }
+
+        return $user->with('company', 'companies','address', 'image')->get();
+    }
+
+    protected static function getAllUsers(){
+
+        $users = Company::find(Auth::user()->company_id)->users()->get();
+        if(!$users){
+            return response()->json(['message' => 'Not Exist Users Relisted at the Company'], 422);
+        }
+        return $users;
+    }
+
+    protected static function updateUser($data, $id){
+      
+        $user = Company::find(Auth::user()->company_id)->users()->where('users.id',$id['id'])->get();
+        
+        if(sizeof($user) < 1){
+            return response()->json(['message' => 'User Not Found', 'status' => 500], 500);
+        }
+        
+        if($user[0]->update($data)){
+
+            return response()->json(['message' => 'Success, Update User', 'status' => 200], 200);
+        }else{
+
+            return response()->json(['message' =>'Failed, Update User', 'status' => 422], 422);
         }
     }
 }

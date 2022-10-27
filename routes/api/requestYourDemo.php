@@ -2,6 +2,5 @@
 
 use App\Http\Controllers\api\RequestYourDemoController;
 
-Route::post('storageCompany', [RequestYourDemoController::class, 'storageCompany']);
-Route::post('storageUser', [RequestYourDemoController::class, 'storageUser']);
-Route::get('getUser', [RequestYourDemoController::class, 'getUser']);
+Route::post('requestYourDemo/storageCompany', [RequestYourDemoController::class, 'storageCompany']);
+Route::post('requestYourDemo/storageUser', [RequestYourDemoController::class, 'storageUser']);
