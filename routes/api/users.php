@@ -7,3 +7,4 @@ Route::get('user/getUser', [UserController::class, 'getUser']);
 Route::get('user/getAllUsers', [UserController::class, 'getAllUsers']);
 Route::put('user/updateUser', [UserController::class, 'updateUser']);
 Route::delete('user/deleteUser', [UserController::class, 'deleteUser']);
+Route::put('user/changePassword', [UserController::class, 'changePassword']);

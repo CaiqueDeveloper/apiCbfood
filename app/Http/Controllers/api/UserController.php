@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\user\ChangePasswordRequest;
 use App\Http\Requests\user\DeleteUserRequest;
 use App\Http\Requests\user\StorageUserRequest;
 use App\Http\Requests\user\UpdateUserRequest;
@@ -35,5 +36,9 @@ class UserController extends Controller
     protected function deleteUser(DeleteUserRequest $request){
 
         return User::deleteUser($request->id);
+    }
+    protected function changePassword(ChangePasswordRequest $request){
+
+        return User::changePassword($request->only('password'), $request->id);
     }
 }

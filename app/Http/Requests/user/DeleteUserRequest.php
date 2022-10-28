@@ -24,13 +24,14 @@ class DeleteUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required'
+            'id' => 'required|regex:/(^[0-9])/u',
         ];
     }
     public function messages()
     {
         return [
             'id.required' => 'The Field ID required.',
+            'id.regex' => 'The Reported Value is not of numeric type',
         ];
     }
 }

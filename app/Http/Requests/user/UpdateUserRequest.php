@@ -28,14 +28,16 @@ class UpdateUserRequest extends FormRequest
             'email' => 'required|email|min:10|max:150',
             'number_phone' => 'required|min:10|max:16',
             'number_phone_alternative' => 'min:10|max:16', 
-            'id' => 'required', 
+            'id' => 'required|regex:/(^[0-9])/u',
         ];
     }
     public function messages()
     {
         return [
             'id.required' => 'The Field ID required.',
+            'id.regex' => 'The Reported Value is not of numeric type',
 
+            
             'name.required' => 'The Field name required.',
             'name.min' => 'Name field is less than (4) charset.',
             'name.max' => 'Name field is longer than (150) charset',

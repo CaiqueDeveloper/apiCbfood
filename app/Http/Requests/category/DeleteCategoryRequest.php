@@ -24,13 +24,14 @@ class DeleteCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required',
+            'id' => 'required|regex:/(^[0-9])/u',
         ];
     }
     public function messages()
     {
         return [
             'id.required' => 'Please with the ID field.',
+            'id.regex' => 'The Reported Value is not of numeric type',
         ];
     }
 }

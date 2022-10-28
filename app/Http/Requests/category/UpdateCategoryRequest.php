@@ -25,7 +25,7 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|min:4|max:100|',
-            'id' => 'required',
+            'id' => 'required|regex:/(^[0-9])/u',
         ];
     }
     public function messages()
@@ -36,6 +36,7 @@ class UpdateCategoryRequest extends FormRequest
             'name.max' => 'The Name field cannot be longer than (100) charset.',
             
             'id.required' => 'Please with the ID field.',
+            'id.regex' => 'The Reported Value is not of numeric type',
         ];
     }
 }
