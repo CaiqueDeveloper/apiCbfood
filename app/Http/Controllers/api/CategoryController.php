@@ -32,5 +32,9 @@ class CategoryController extends Controller
        
         return Category::getAllCategory();
     }
+    protected function getCategory(DeleteCategoryRequest $request){
+        
+        return Category::getCategory($request->id);
+    }
   
 }

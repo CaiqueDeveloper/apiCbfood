@@ -31,6 +31,18 @@ class Category extends Model
             return response()->json(['message'=> 'Failed, Registered Category', 'status' => 422], 422);
         }
     }
+    protected static function getCategory($id){
+        
+        $category = Company::find(Auth::user()->company_id)->category()->where('id',$id)
+        ->select('categories.id','categories.category_morph_id as company_id', 'categories.name','categories.created_at')
+        ->get();
+        
+        if(sizeof($category) <= 0){
+            return response()->json(['message'=> 'We were unable to locate the specified category.' , 'status' => 500], 500);
+        }
+
+        return $category;
+    }
     /**
      * Undocumented function
      *
