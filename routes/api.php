@@ -23,6 +23,7 @@ Route::prefix('app')->group(base_path('routes/api/settingCompany.php'));
 Route::prefix('app')->group(base_path('routes/api/category.php'));
 Route::prefix('app')->group(base_path('routes/api/product.php'));
 Route::prefix('app')->group(base_path('routes/api/additional.php'));
+Route::prefix('app')->group(base_path('routes/api/additionalItem.php'));
 Route::prefix('app')->group(base_path('routes/api/order.php'));
 Route::prefix('app')->group(base_path('routes/api/permission.php'));
 Route::prefix('app')->group(base_path('routes/api/profile.php'));

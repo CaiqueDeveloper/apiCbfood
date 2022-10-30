@@ -77,7 +77,7 @@ class Additional extends Model
         
         if(sizeof($additional) <= 0){
             
-            return response()->json(['message' => 'Additional Not Found', 'status' => 200], 200);
+            return response()->json(['message' => 'Additional Not Found', 'status' => 404], 404);
         }
 
         if($additional[0]->delete()){
