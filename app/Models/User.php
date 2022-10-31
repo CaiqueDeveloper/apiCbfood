@@ -124,14 +124,16 @@ class User extends Authenticatable implements JWTSubject
      */
 
     protected static function getUser($id = null){
-        
+
         if(!Auth::check()){
             return response()->json(['message'=> 'User is not logged'],422);
         }
+       
         if($id){
-            $user = User::find($id)->first();
-            if(sizeof($user) < 1){
-                return response()->json(['message' => 'User Not Found', 'status' => 500], 500);
+            $user = User::find($id);
+
+            if(!$user){
+                return response()->json(['message' => 'User Not Found', 'status' => 404], 404);
             }
         }else{
 
