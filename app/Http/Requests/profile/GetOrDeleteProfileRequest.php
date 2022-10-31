@@ -4,7 +4,7 @@ namespace App\Http\Requests\profile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetOrDeleteProfileReques extends FormRequest
+class GetOrDeleteProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -65,8 +65,10 @@ class Profile extends Model
         }
 
         if($data[0]->delete()){
+            
             return response()->json(['message' => 'Success, Delete Profile', 'status' => 200], 200);
         }else{
+            
             return response()->json(['message' => 'Failed, Delete Profile', 'status' => 422], 422);
         }
     }

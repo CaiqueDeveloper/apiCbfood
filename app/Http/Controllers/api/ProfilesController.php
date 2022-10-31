@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\profile\GetOrDeleteProfileReques;
+use App\Http\Requests\profile\GetOrDeleteProfileRequest;
 use App\Http\Requests\profile\StorageProfileRequest;
 use App\Http\Requests\profile\UpdateProfileRequest;
 use App\Models\Profile;
@@ -18,7 +18,7 @@ class ProfilesController extends Controller
 
         return Profile::getAllProfiles();
     }
-    protected function getProfile(GetOrDeleteProfileReques $request){
+    protected function getProfile(GetOrDeleteProfileRequest $request){
 
         return Profile::getProfile($request->only('id'));
     }
@@ -30,7 +30,7 @@ class ProfilesController extends Controller
 
         return Profile::updateProfile($request->except('id'), $request->only('id'));
     }
-    protected function deleteProfile(GetOrDeleteProfileReques $request){
+    protected function deleteProfile(GetOrDeleteProfileRequest $request){
 
         return Profile::deleteProfile($request->only('id'));
     }
