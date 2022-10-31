@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Company extends Model
 {
@@ -58,6 +59,67 @@ class Company extends Model
             return response()->json(['message' => 'Success, Registered Company', 'status' => 200], 200);
         }else{
             return response()->json(['message' => 'Failed, Registered Company', 'status' => 422], 422);
+        }
+    }
+    protected static function getCompany($id){
+
+        $company = Company::where($id)->with('settings','image','users','categories','additional.items','product', 'orders', 'address')->get();
+        
+        if(sizeof($company) <= 0){
+            
+            return response()->json(['message' => 'Error ! Company not found', 'status' => 404], 404);
+        }
+
+        return $company;
+    }
+    protected static function getAllCompaniesUser(){
+         
+       $company = Auth::user()->companies()->with('settings','image','users','categories','additional.items','product', 'orders', 'address')->get();
+        
+        if(sizeof($company) <= 0){
+            
+            return response()->json(['message' => 'Error ! Company not found', 'status' => 404], 404);
+        }
+
+        return $company;
+    }
+
+    protected static function updateCompany($data, $id){
+
+        $company = Company::where($id)->get();
+
+        if(sizeof($company) <= 0){
+            
+            return response()->json(['message' => 'Error ! Company not found', 'status' => 404], 404);
+        }
+        
+        if($company[0]->update($data)){
+            
+            return response()->json(['message' => 'Success ! Company Update', 'status' => 200], 200);
+
+        }else{
+            
+            return response()->json(['message' => 'Error ! Company Update', 'status' => 500], 500);
+        }
+
+    }
+
+    protected static function deleteCompany($id){
+        
+        $company = Company::where($id)->get();
+
+        if(sizeof($company) <= 0){
+            
+            return response()->json(['message' => 'Error ! Company not found', 'status' => 404], 404);
+        }
+        
+        if($company[0]->delete()){
+            
+            return response()->json(['message' => 'Success ! Company Delete', 'status' => 200], 200);
+
+        }else{
+            
+            return response()->json(['message' => 'Error ! Company Delete', 'status' => 500], 500);
         }
     }
 

@@ -4,20 +4,30 @@ namespace App\Http\Requests\company;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorageCompanyRequest extends FormRequest
+class UpdateCompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [
+            'id' => 'required|regex:/(^[0-9])/u',
             'social_reason' => 'required|min:4|max:150',
             'cpj' => 'unique:companies|min:10|max:18',
-            'email' => 'unique:companies|email',
-            'number_phone' => 'required|unique:companies|min:10|max:16',
+            'number_phone' => 'min:10|max:16',
             'state_registration' => 'max:2|string',
             'foundation_date' => 'date',  
         ];
@@ -25,6 +35,9 @@ class StorageCompanyRequest extends FormRequest
     public function messages()
     {
         return [
+            'id.required' => 'The Field ID required.',
+            'id.regex' => 'The Reported Value is not of numeric type',
+            
             'social_reason.required' => 'The Field Social Reason required.',
             'social_reason.min' => 'Social Reason field is less than (4) charset.',
             'social_reason.max' => 'Social Reason field is longer than (150) charset',
