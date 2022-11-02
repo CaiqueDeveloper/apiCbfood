@@ -17,4 +17,8 @@ class SettingCompany extends Model
     public function company(){
         return $this->belongsTo(Company::class);
     }
+    protected static function store($data){
+        
+        return SettingCompany::create($data);
+    }
 }

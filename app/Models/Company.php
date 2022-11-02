@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\api\settingCompanyController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -51,11 +52,13 @@ class Company extends Model
 
 
     protected static function storage($data){
-
+        
         $data['number_phone'] = str_replace('-','',filter_var($data['number_phone'], FILTER_SANITIZE_NUMBER_INT));
         $data['cnpj'] = str_replace('-','',filter_var($data['cnpj'], FILTER_SANITIZE_NUMBER_INT));
+        $company_id = Company::create($data)->id;
 
-        if(Company::create($data)){
+        if(settingCompanyController::generateSlugCompanyName(['social_reason' => $data['social_reason'], 'company_id' =>$company_id])){
+            
             return response()->json(['message' => 'Success, Registered Company', 'status' => 200], 200);
         }else{
             return response()->json(['message' => 'Failed, Registered Company', 'status' => 422], 422);
