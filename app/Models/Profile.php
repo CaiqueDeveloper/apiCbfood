@@ -72,6 +72,13 @@ class Profile extends Model
             return response()->json(['message' => 'Failed, Delete Profile', 'status' => 422], 422);
         }
     }
-    
+    protected static function existProfile($id){
+        
+        if(Profile::where('id',$id)->exists()){
+            return true;
+        }else{
+            return false;
+        }
+    }
    
 }

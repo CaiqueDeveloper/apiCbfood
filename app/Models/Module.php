@@ -82,5 +82,13 @@ class Module extends Model
             
         }
     }
+    protected static function existModule($id){
+        
+        if(Module::where('id',$id)->exists()){
+            return true;
+        }else{
+            return false;
+        }
+    }
     
 }
