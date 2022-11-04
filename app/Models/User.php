@@ -62,8 +62,21 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+    public function profiles(){
 
-    
+        return $this->belongsToMany(Profile::class);
+    }
+    public function hasModule(Module $module){
+
+        return $this->hasAnyProfiles($module->profiles);
+    }
+    public function hasAnyProfiles($profiles){
+
+        if(is_array($profiles) || is_object($profiles)){
+            return !!$profiles->intersect($this->profiles)->count();
+        }
+        return $this->profiles->contains('name', $profiles->name);
+    }
     public function company(){
         return $this->belongsTo(Company::class, 'company_id', 'id');
     }
@@ -217,6 +230,14 @@ class User extends Authenticatable implements JWTSubject
         }else{
 
             return response()->json(['message' =>'Failed, Change Password User', 'status' => 422], 422);
+        }
+    }
+    protected static function existUser($user_id){
+
+        if(User::where('id',$user_id)->exists()){
+            return true;
+        }else{
+            return false;
         }
     }
 }
