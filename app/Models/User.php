@@ -240,4 +240,81 @@ class User extends Authenticatable implements JWTSubject
             return false;
         }
     }
+    protected static function storageAddress($data, $user_id = null){
+        
+        $user = [];
+        if($user_id != null){
+            
+            $user = User::find($user_id);
+
+            if(!$user){
+                return response()->json(['message' => 'User Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $user = Auth::user();
+        }
+
+        return Address::storageOrUpdateAddress($user, $data);
+    }
+    protected static function getAllAddress($user_id = null){
+        $user = [];
+        if($user_id != null){
+            
+            $user = User::find($user_id);
+
+            if(!$user){
+                return response()->json(['message' => 'User Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $user = Auth::user();
+        }
+        return Address::getAllAddress($user, $user_id);
+    }
+    protected static function getAddress($user_id = null, $id){
+        $user = [];
+        if($user_id != null){
+            
+            $user = User::find($user_id);
+
+            if(!$user){
+                return response()->json(['message' => 'User Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $user = Auth::user();
+        }
+        return Address::getAddress($user, $id);
+    }
+    protected static function updateAddress($data, $user_id = null, $id){
+        $user = [];
+        if($user_id != null){
+            
+            $user = User::find($user_id);
+            
+            if(!$user){
+                return response()->json(['message' => 'User Not Found', 'status' => 404], 404);
+            }
+            
+        }else{
+            $user = Auth::user();
+        }
+        return Address::updateAddress($data, $user, $id);
+    }
+    protected static function deleteAddress($user_id = null, $id){
+        $user = [];
+        if($user_id != null){
+            
+            $user = User::find($user_id);
+
+            if(!$user){
+                return response()->json(['message' => 'User Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $user = Auth::user();
+        }
+        return Address::deleteAddress($user, $id);
+    }
 }

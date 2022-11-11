@@ -125,6 +125,94 @@ class Company extends Model
             return response()->json(['message' => 'Error ! Company Delete', 'status' => 500], 500);
         }
     }
+    protected static function storageAddress($data, $company_id = null){
+        
+        $company = [];
+        if($company_id != null){
+            
+            $company = Company::find($company_id);
 
-    
+            if(!$company){
+                return response()->json(['message' => 'Company Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $company = Auth::user()->company;
+        }
+        
+        return Address::storageOrUpdateAddress($company, $data);
+    }
+    protected static function getAllAddress($company_id = null){
+
+        $company = [];
+        if($company_id != null){
+            
+            $company = Company::find($company_id);
+
+            if(!$company){
+                return response()->json(['message' => 'Company Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $company = Auth::user()->company;
+        }
+        return Address::getAllAddress($company, $company_id);
+    }
+
+    protected static function getAddress($company_id = null, $id){
+
+        $company = [];
+        
+        if($company_id != null){
+            
+            $company = Company::find($company_id);
+
+            if(!$company){
+
+                return response()->json(['message' => 'Company Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+
+            $company = Auth::user()->company;
+        }
+        return Address::getAddress($company, $id);
+    }
+
+    protected static function updateAddress($data, $company_id = null, $id){
+
+        $company = [];
+
+        if($company_id != null){
+            
+            $company = Company::find($company_id);
+
+            if(!$company){
+
+                return response()->json(['message' => 'Company Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $company = Auth::user()->company;
+        }
+        return Address::updateAddress($data, $company, $id);
+    }
+    protected static function deleteAddress($company_id = null, $id){
+
+        $company = [];
+
+        if($company_id != null){
+            
+            $company = Company::find($company_id);
+
+            if(!$company){
+
+                return response()->json(['message' => 'Company Not Found', 'status' => 404], 404);
+            }
+
+        }else{
+            $company = Auth::user()->company;
+        }
+        return Address::deleteAddress($company, $id);
+    }
 }
