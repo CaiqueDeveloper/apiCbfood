@@ -11,4 +11,9 @@ class AdditionalProduct extends Model
     protected  $table = 'additional_product';
     protected $fillable = ['additional_id', 'product_id'];
     public $timestamps = false;
+
+    protected static function storageAdditionals($product, $additionals){
+        
+        return $product->additionalsProduct()->createMany($additionals);
+    }
 }

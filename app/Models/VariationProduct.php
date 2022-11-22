@@ -11,4 +11,8 @@ class VariationProduct extends Model
     protected  $table = 'variation_product';
     protected $fillable = ['product_id', 'variationName', 'variationType', 'variationPrice'];
 
+    protected static function storageVariation($product, $variation){
+
+        return $product->variations()->createMany($variation);
+    }
 }

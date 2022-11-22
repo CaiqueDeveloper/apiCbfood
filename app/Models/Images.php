@@ -14,4 +14,8 @@ class Images extends Model
         
         return $this->morphTo();
     }
+    protected static function storageImages($model, $images){
+
+        return $model->image()->createMany($images);
+    }
 }
