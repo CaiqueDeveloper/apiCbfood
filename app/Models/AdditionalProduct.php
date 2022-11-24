@@ -12,8 +12,13 @@ class AdditionalProduct extends Model
     protected $fillable = ['additional_id', 'product_id'];
     public $timestamps = false;
 
+    public function additionals(){
+
+        return $this->hasMany(Additional::class,'additional_morph_id', 'additional_id');
+    }
     protected static function storageAdditionals($product, $additionals){
         
         return $product->additionalsProduct()->createMany($additionals);
     }
+    
 }

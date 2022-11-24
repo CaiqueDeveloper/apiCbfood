@@ -63,8 +63,22 @@ class Product extends Model
             return response()->json(['data' => ['success' => true, 'error' => $error, 'status' => 200]], 200);
         }
         
-
-        
-        
     }
+
+    protected static function getProductsCompany($company_id = null){
+        
+        $company = [];
+        
+        if($company_id != null){
+           $company = Company::find($company_id)->with('product.images', 'product.variations','product.additionalsProduct.additionals.items' ,'product.category')->get();
+        }else{
+            $company = auth()->user()->company()->with('product.images', 'product.variations','product.additionalsProduct.additionals.items' ,'product.category')->get();
+        }
+
+        if(sizeof($company[0]->product) > 0){
+            return response()->json(['data' => ['success' => true, 'error' => [], 'status' => 200, 'products' => $company[0]->product]], 200,);
+        }else{
+            return response()->json(['data' => ['success' => false, 'error' => 'Products no registered', 'status' => 404, 'products' => []]], 404);
+        }
+    }   
 }

@@ -10,11 +10,14 @@ class Additional extends Model
 {
     use HasFactory;
     protected $fillable  = ['name'];
-
+    
+   
+    
     public function aadditional_morph(){
         
         return $this->morphTo();
     }
+    
     public function items(){
 
         return $this->hasMany(AdditionalItems::class);

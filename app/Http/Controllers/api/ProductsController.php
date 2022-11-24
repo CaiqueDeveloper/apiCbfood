@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Classes\ProductClass;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -16,5 +17,9 @@ class ProductsController extends Controller
     protected function storageProduct(Request $request){
        
         return ProductClass::processingResponseProduct($request->all());
+    }
+    protected function getProducts(){
+
+        return Product::getProductsCompany();
     }
 }
