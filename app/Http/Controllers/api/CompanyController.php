@@ -15,7 +15,7 @@ class CompanyController extends Controller
 {
     public function __construct() 
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['storageCompany']]);
     }
 
     protected function storageCompany(StorageCompanyRequest $request){
