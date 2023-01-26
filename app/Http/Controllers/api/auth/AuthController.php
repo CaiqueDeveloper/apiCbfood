@@ -73,7 +73,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'url_redirect' => User::redirectUserBasedOnProfileRoute(Auth::user()->id)
         ]);
     }
     /**

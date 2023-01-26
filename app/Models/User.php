@@ -141,7 +141,7 @@ class User extends Authenticatable implements JWTSubject
         if(!Auth::check()){
             return response()->json(['message'=> 'User is not logged'],422);
         }
-        $user = [];
+        $data = [];
         if($id){
             $user = User::find($id);
             if(!$user){
@@ -150,7 +150,12 @@ class User extends Authenticatable implements JWTSubject
         }else{
             $user = auth()->user();
         }
-        return $user->with(['company', 'companies','address', 'image'])->where('users.id', $user->id)->get();
+    
+        $aux_user = $user->with(['company', 'companies','address', 'image'])->where('users.id', $user->id)->get();
+        foreach($aux_user as $key => $u){
+            $u->drawMenuBasedOnProfilePermission = self::designMenuBasedUserProfiles($user->id);
+        }
+        return $aux_user;
     }
     /**
      * Undocumented function
@@ -314,4 +319,37 @@ class User extends Authenticatable implements JWTSubject
         }
         return Address::deleteAddress($user, $id);
     }
+    protected static function designMenuBasedUserProfiles($id){
+        
+        $modules = ProfilesUser::join('module_profile', 'module_profile.profile_id', '=', 'profile_user.profile_id')
+        ->join('modules', 'modules.id', '=', 'module_profile.module_id')
+        ->where('profile_user.user_id', $id)
+        ->where('modules.has_modules', true)
+        ->select('modules.name','modules.id', 'modules.url', 'modules.label', 'modules.menu_name', 'modules.icon_class')
+	    ->orderBy('modules.order_list', 'ASC')
+        ->get();
+
+        $groupedModules = array();
+        foreach($modules as $module){
+            $index = array_search($module->menu_name, array_column($groupedModules, 'menu'));
+            if($index === false){
+                array_push($groupedModules, ['id' =>  $module->id,'menu' => $module->menu_name, 'iconClass' => $module->icon_class, 'subMenu' => array($module)]);
+            }else{
+                array_push($groupedModules[$index]['subMenu'], $module);
+
+            }
+        }
+        return $groupedModules;
+    }
+    protected static function redirectUserBasedOnProfileRoute($id_user){
+
+        $modules = ProfilesUser::where('user_id', '=', $id_user)
+        ->join('module_profile', 'module_profile.profile_id','=', 'profile_user.profile_id')
+        ->join('modules', 'modules.id','=', 'module_profile.module_id' )
+        ->select('modules.name', 'modules.url')
+        ->orderBy('modules.id','asc')
+        ->first();
+
+        return $modules->url != null ? $modules->url : "/" ;
+	}
 }
