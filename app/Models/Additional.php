@@ -27,7 +27,7 @@ class Additional extends Model
         $storage = Company::find(Auth::user()->company_id)->additional()->create($data);
 
         if($storage){
-            return response()->json(['message' => 'Success, Registered Additional', 'status' => 200], 200);
+            return response()->json(['message' => 'Success, Registered Additional', 'data' => $storage, 'status' => 200], 200);
         }else{
 
             return response()->json(['message' =>'Failed, Registered Additional', 'status' => 422], 422);
@@ -52,7 +52,7 @@ class Additional extends Model
 
         if(sizeof($additional) <= 0){
             
-            return response()->json(['message' => 'This company has not yet registered the additional', 'status' => 200], 200);
+            return response()->json(['message' => 'This company has not yet registered the additional', 'data' => [], 'status' => 200], 200);
         }
 
         return $additional;
@@ -65,9 +65,9 @@ class Additional extends Model
             
             return response()->json(['message' => 'Additional Not Found', 'status' => 200], 200);
         }
-
-        if($additional[0]->update($data)){
-            return response()->json(['message' => 'Success, Update Additional', 'status' => 200], 200);
+        $additional = $additional[0]->update($data);
+        if($additional){
+            return response()->json(['message' => 'Success, Update Additional', 'data' => $additional, 'status' => 200], 200);
         }else{
 
             return response()->json(['message' =>'Failed, Update Additional', 'status' => 422], 422);

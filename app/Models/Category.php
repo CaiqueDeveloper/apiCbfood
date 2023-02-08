@@ -24,9 +24,9 @@ class Category extends Model
      */
     protected static function storage($data){
         $company = Company::find(Auth::user()->company_id);
-        
-        if($company->category()->create($data)){
-            return response()->json(['message'=> 'Success, Registered Category', 'status' => 200], 200);
+        $category = $company->category()->create($data);
+        if($category){
+            return response()->json(['message'=> 'Success, Registered Category', 'status' => 200,  'data' => $category], 200);
         }else{
             return response()->json(['message'=> 'Failed, Registered Category', 'status' => 422], 422);
         }
@@ -55,10 +55,10 @@ class Category extends Model
         ->get();
         
         if(sizeof($category) <= 0){
-            return response()->json(['message'=> 'This company has not yet registered in a category.' , 'status' => 200], 200);
+            return response()->json(['message'=> 'This company has not yet registered in a category.', 'data' => []  , 'status' => 200], 200);
         }
 
-        return response()->json($category, 200);
+        return response()->json($category->toArray(), 200);
     }
     /**
      * Undocumented function
@@ -73,9 +73,9 @@ class Category extends Model
         if(sizeof($category) <= 0){
             return response()->json(['message'=> 'We were unable to locate the specified category.' , 'status' => 500], 500);
         }
-
-        if($category[0]->update($data)){
-            return response()->json(['message'=> 'Success, Update Category','status' => 200], 200);
+        $category = $category[0]->update($data);
+        if($category){
+            return response()->json(['message'=> 'Success, Update Category','status' => 200 ,'data' => $category], 200);
         }else{
             return response()->json(['message'=> 'Failed, Update Category' , 'status' => 422], 422);
         }

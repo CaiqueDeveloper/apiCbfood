@@ -24,13 +24,14 @@ class StorageCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:100|'
+            'name' => 'required|min:4|max:100|unique:categories'
         ];
     }
     public function messages()
     {
         return [
             'name.required' => 'Please with the name field.',
+            'name.unique' => 'The Category provided already exists.',
             'name.min' => 'The Name field cannot be less than (4) charset.',
             'name.max' => 'The Name field cannot be longer than (100) charset.',
         ];

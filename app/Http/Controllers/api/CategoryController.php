@@ -22,6 +22,7 @@ class CategoryController extends Controller
     }
     protected function updateCategory(UpdateCategoryRequest $request){
        
+        
         return Category::updateCategory($request->except('id'), $request->only('id'));
     }
     protected function deleteCategory(DeleteCategoryRequest $request){

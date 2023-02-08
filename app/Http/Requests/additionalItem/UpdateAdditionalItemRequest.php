@@ -28,7 +28,7 @@ class UpdateAdditionalItemRequest extends FormRequest
             'additional_id' => 'required|regex:/(^[0-9])/u',
             'name' => 'required|min:3|max:100',
             'price' => 'required',
-            'description' => 'required',
+            'description' => 'max:100',
         ];
     }
     public function messages()

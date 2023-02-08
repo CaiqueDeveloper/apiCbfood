@@ -27,7 +27,7 @@ class StorageAdditionalItemRequest extends FormRequest
             'additional_id' => 'required|regex:/(^[0-9])/u',
             'name' => 'required|min:3|max:100',
             'price' => 'required',
-            'description' => 'required',
+            'description' => 'max:100',
         ];
     }
     public function messages()
@@ -39,6 +39,8 @@ class StorageAdditionalItemRequest extends FormRequest
             'name.required' => 'Please with the name field.',
             'name.min' => 'The Name field cannot be less than (3) charset.',
             'name.max' => 'The Name field cannot be longer than (100) charset.',
+            'description.min' => 'The Name field cannot be less than (3) charset.',
+            'description.max' => 'The Name field cannot be longer than (100) charset.',
             
             'price.required' => 'Please with the price field.',
             'description.required' => 'Please with the description field.',
