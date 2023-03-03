@@ -14,17 +14,17 @@ Class ProductClass{
         $product['name'] = $data['name'];
         $product['category_id'] = $data['category_id'];
         $product['description'] = $data['description'];
-        $product['price'] = $data['price'];
-        $product['canPrice'] = $data['canPrice'];
-        $product['hasVariations'] = $data['hasVariations'];
+        $product['price'] = str_replace(',','.',str_replace('R$', '', $data['price']));
+        $product['canPrice'] = isset($data['canPrice']) ? 1 : 0;
+        $product['hasVariations'] = isset($data['hasVariations']) ? 1 : 0;
+        $product['hasAdditionals'] = isset($data['hasAdditionals']) ? 1 : 0;
         
         $variations = isset($data['variationName']) ? self::processingVariationProduct($data['variationName'], $data['variationType'], $data['variationPrice']) : [];
         $additionals = isset($data['additionals']) ? self::processingAdditionalsProduct($data['additionals']) : [];
         $images = isset($data['images']) ? self::processingImagesProduct($data['images']) : [];
         
         $company = Auth::user()->company;
-        
-        
+        //dd($product);
         return Product::storageProduct($company, $product, $variations, $additionals, $images);
        
         
@@ -41,7 +41,7 @@ Class ProductClass{
                 $variationProduct[$key]['variationType'] = $type;
             }
              foreach($variationPrice as $key => $price){
-                $variationProduct[$key]['variationPrice'] = $price;
+                $variationProduct[$key]['variationPrice'] = str_replace(',','.',str_replace('R$', '', $price));
             }
         }
         
